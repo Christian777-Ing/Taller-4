@@ -1,0 +1,4 @@
+"""
+Actividades app initialization.
+"""
+default_app_config = 'actividades.apps.ActividadesConfig'

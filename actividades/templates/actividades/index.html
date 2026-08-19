@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades académicas</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --ink: #17221f;
+      --muted: #68746e;
+      --paper: #f4f6f1;
+      --panel: #ffffff;
+      --line: #dde4dd;
+      --green: #1e624b;
+      --green-dark: #164936;
+      --lime: #c7e86b;
+      --coral: #f38b72;
+      --shadow: 0 20px 55px rgba(27, 58, 42, .10);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: 'DM Sans', sans-serif;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0 0 auto;
+      height: 390px;
+      z-index: -1;
+      background: radial-gradient(circle at 85% 10%, #d7ef8c 0 9%, transparent 25%), linear-gradient(120deg, #dcefe0, #f4f6f1 62%);
+    }
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 60px; }
+    header { display: flex; align-items: flex-start; justify-content: space-between; gap: 30px; margin-bottom: 34px; }
+    .eyebrow { color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; letter-spacing: -.04em; }
+    h1 { max-width: 620px; margin-top: 8px; font-size: clamp(2.3rem, 5vw, 4.4rem); line-height: .98; }
+    .intro { max-width: 510px; color: var(--muted); font-size: 16px; line-height: 1.6; margin: 16px 0 0; }
+    .signal { display: flex; align-items: center; gap: 9px; padding: 11px 15px; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.9); border-radius: 30px; color: var(--green-dark); font-size: 13px; white-space: nowrap; box-shadow: 0 8px 20px rgba(44, 83, 55, .06); }
+    .dot { width: 9px; height: 9px; background: #47ad68; border-radius: 50%; box-shadow: 0 0 0 4px #d6f1d9; }
+    .layout { display: grid; grid-template-columns: 350px 1fr; gap: 24px; align-items: start; }
+    .card { background: var(--panel); border: 1px solid rgba(221,228,221,.8); border-radius: 16px; box-shadow: var(--shadow); }
+    .form-card { padding: 26px; position: sticky; top: 20px; }
+    .card-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 23px; }
+    h2 { font-size: 21px; }
+    .number { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 9px; background: var(--lime); color: var(--green-dark); font-size: 13px; font-weight: 700; }
+    label { display: block; margin: 17px 0 7px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    input, textarea { width: 100%; border: 1px solid var(--line); border-radius: 9px; outline: none; background: #fbfcfa; color: var(--ink); font: inherit; padding: 12px 13px; transition: .2s border, .2s box-shadow; }
+    input:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(30,98,75,.1); }
+    textarea { min-height: 115px; resize: vertical; }
+    button { width: 100%; margin-top: 22px; border: 0; border-radius: 9px; padding: 14px 18px; cursor: pointer; color: white; background: var(--green); font: 700 14px 'DM Sans', sans-serif; transition: .2s transform, .2s background; }
+    button:hover { background: var(--green-dark); transform: translateY(-1px); }
+    button:disabled { opacity: .6; cursor: wait; transform: none; }
+    .feedback { min-height: 22px; margin: 14px 0 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .feedback.error { color: #b84b37; }
+    .feedback.success { color: var(--green); }
+    .list-card { overflow: hidden; }
+    .list-head { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 26px 28px 21px; border-bottom: 1px solid var(--line); }
+    .list-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+    .refresh { width: auto; margin: 0; padding: 10px 13px; background: #edf3e8; color: var(--green-dark); }
+    .refresh:hover { background: #e1ecd9; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 650px; border-collapse: collapse; text-align: left; }
+    th { padding: 15px 28px; color: var(--muted); background: #fafcf9; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    td { padding: 19px 28px; border-top: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+    td strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 15px; }
+    td small { display: block; max-width: 270px; margin-top: 5px; color: var(--muted); line-height: 1.4; }
+    .responsable { color: var(--green-dark); font-weight: 600; }
+    .date { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .empty, .loading { padding: 55px 28px; color: var(--muted); text-align: center; }
+    .empty strong { display: block; color: var(--ink); font-family: 'Space Grotesk', sans-serif; font-size: 19px; margin-bottom: 7px; }
+    .json-card { grid-column: 1 / -1; margin-top: 0; padding: 0; }
+    .json-card summary { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 17px 22px; cursor: pointer; list-style: none; }
+    .json-card summary::-webkit-details-marker { display: none; }
+    .json-card summary::after { content: '+'; color: var(--green); font-size: 22px; font-weight: 500; }
+    .json-card[open] summary::after { content: '−'; }
+    .json-title { display: flex; align-items: center; gap: 11px; font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; }
+    .json-status { padding: 5px 9px; border-radius: 20px; background: #edf3e8; color: var(--green-dark); font: 700 11px 'DM Sans', sans-serif; }
+    .json-card p { margin: 0; padding: 0 22px 15px; color: var(--muted); font-size: 13px; }
+    pre { margin: 0; padding: 18px; overflow-x: auto; border-radius: 10px; background: #17221f; color: #d7ef8c; font: 13px/1.65 'DM Sans', monospace; }
+    @media (max-width: 800px) {
+      .shell { width: min(100% - 24px, 600px); padding-top: 20px; }
+      header { display: block; }
+      .signal { display: inline-flex; margin-top: 20px; }
+      .layout { grid-template-columns: 1fr; }
+      .form-card { position: static; }
+      .list-head { padding: 22px 18px; }
+      th, td { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <div class="eyebrow">Panel académico · Firebase</div>
+        <h1>Actividades que mueven el aprendizaje.</h1>
+        <p class="intro">Registra nuevas actividades y consulta todo lo que ya vive en tu base de datos, desde un solo lugar.</p>
+      </div>
+      <div class="signal"><span class="dot"></span> Base de datos conectada</div>
+    </header>
+
+    <section class="layout">
+      <form class="card form-card" id="activity-form">
+        <div class="card-title"><h2>Nueva actividad</h2><span class="number">01</span></div>
+        <label for="titulo">Título</label>
+        <input id="titulo" name="titulo" maxlength="255" placeholder="Ej. Taller de Python" required>
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" placeholder="¿De qué trata la actividad?" required></textarea>
+        <label for="responsable">Responsable</label>
+        <input id="responsable" name="responsable" maxlength="255" placeholder="Nombre del responsable" required>
+        <button type="submit" id="submit-button">Guardar actividad <span>→</span></button>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+      </form>
+
+      <section class="card list-card">
+        <div class="list-head">
+          <div><h2>Actividades registradas</h2><p id="count">Cargando actividades...</p></div>
+          <button class="refresh" id="refresh" type="button" title="Actualizar actividades">↻ Actualizar</button>
+        </div>
+        <div id="table-container" class="loading">Consultando Firebase...</div>
+      </section>
+
+      <details class="card json-card">
+        <summary><span class="json-title">Respuesta JSON <span class="json-status" id="json-status">Esperando</span></span></summary>
+        <p>Respuesta más reciente de la API, con su código HTTP.</p>
+        <pre id="json-output">Esperando respuesta...</pre>
+      </details>
+    </section>
+  </main>
+
+  <script>
+    const apiUrl = '/api/actividades/';
+    const form = document.getElementById('activity-form');
+    const feedback = document.getElementById('feedback');
+    const tableContainer = document.getElementById('table-container');
+    const count = document.getElementById('count');
+    const submitButton = document.getElementById('submit-button');
+    const jsonOutput = document.getElementById('json-output');
+    const jsonStatus = document.getElementById('json-status');
+
+    function showJson(httpStatus, responseData) {
+      jsonStatus.textContent = `HTTP ${httpStatus}`;
+      jsonOutput.textContent = JSON.stringify({ http_status: httpStatus, response: responseData }, null, 2);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[character]));
+    }
+
+    function renderActivities(activities) {
+      count.textContent = `${activities.length} actividad${activities.length === 1 ? '' : 'es'} en Firebase`;
+      if (!activities.length) {
+        tableContainer.className = 'empty';
+        tableContainer.innerHTML = '<strong>Aún no hay actividades</strong>Usa el formulario para registrar la primera.';
+        return;
+      }
+      tableContainer.className = 'table-wrap';
+      tableContainer.innerHTML = `<table><thead><tr><th>Actividad</th><th>Responsable</th><th>Creada</th></tr></thead><tbody>${activities.map(activity => `
+        <tr><td><strong>${escapeHtml(activity.titulo)}</strong><small>${escapeHtml(activity.descripcion)}</small></td>
+        <td class="responsable">${escapeHtml(activity.responsable)}</td><td class="date">${formatDate(activity.fecha_creacion)}</td></tr>`).join('')}</tbody></table>`;
+    }
+
+    function formatDate(value) {
+      if (!value) return 'Sin fecha';
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? escapeHtml(value) : date.toLocaleString('es-CO', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    async function loadActivities() {
+      tableContainer.className = 'loading';
+      tableContainer.textContent = 'Consultando Firebase...';
+      try {
+        const response = await fetch(apiUrl);
+        const result = await response.json();
+        showJson(response.status, result);
+        if (!response.ok) throw new Error(result.message || 'No se pudieron consultar las actividades.');
+        renderActivities(result.data || []);
+      } catch (error) {
+        count.textContent = 'No fue posible consultar Firebase';
+        tableContainer.className = 'empty';
+        tableContainer.innerHTML = `<strong>Ocurrió un problema</strong>${escapeHtml(error.message)}`;
+      }
+    }
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      feedback.className = 'feedback';
+      feedback.textContent = 'Guardando en Firebase...';
+      const data = Object.fromEntries(new FormData(form));
+      try {
+        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        const result = await response.json();
+        showJson(response.status, result);
+        if (!response.ok) throw new Error(result.message || 'Revisa los datos enviados.');
+        feedback.className = 'feedback success';
+        feedback.textContent = 'Actividad guardada correctamente.';
+        form.reset();
+        await loadActivities();
+      } catch (error) {
+        feedback.className = 'feedback error';
+        feedback.textContent = error.message;
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+
+    document.getElementById('refresh').addEventListener('click', loadActivities);
+    loadActivities();
+  </script>
+</body>
+</html>
